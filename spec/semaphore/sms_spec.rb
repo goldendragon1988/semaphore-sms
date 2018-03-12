@@ -43,4 +43,11 @@ RSpec.describe Semaphore::Sms do
       expect(Semaphore::Sms.sender_name).to eq "saitama"
     end
   end
+
+  describe "client" do
+
+    describe ".send_message" do
+
+    end
+  end
 end

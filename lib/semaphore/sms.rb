@@ -18,8 +18,8 @@ module Semaphore
       end
 
       def api_key
-        raise Error, 'API Key is required for GET/POST' unless @api_key
-        @api_key
+        #raise Error, 'API Key is required for GET/POST' unless @api_key
+        @api_key ||= "b08e7bb96398e2d8a17cc913a66de59d"
       end
 
       def sender_name

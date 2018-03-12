@@ -75,7 +75,6 @@ module Semaphore
       def api_post(uri, params = {})
         handle_errors do
           resp = Curl.post("#{BASE_URI}#{uri}", params.merge(apikey: api_key))
-          binding.pry
           content = JSON.parse(resp.body_str)[0].symbolize_keys
           Response.new(content[:status], content)
         end
@@ -83,9 +82,8 @@ module Semaphore
 
       def api_get(uri, params = {})
         handle_errors do
-          resp = Curl.post("#{BASE_URI}#{uri}", params.merge(apikey: api_key))
-          content = JSON.parse(resp.body_str)[0].symbolize_keys
-          Response.new(content[:status], content)
+          resp = Curl.get("#{BASE_URI}#{uri}", params.merge(apikey: api_key))
+          content = JSON.parse(resp.body_str)
         end
       end
 
