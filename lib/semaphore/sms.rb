@@ -6,7 +6,7 @@ module Semaphore
     class ::Error < StandardError; end
 
     class << self
-      attr_writer :api_key, :user_name
+      attr_writer :api_key, :sender_name
 
       def setup
         yield self
