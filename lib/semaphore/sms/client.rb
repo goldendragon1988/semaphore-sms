@@ -1,4 +1,6 @@
 require "curb"
+require "pry"
+require "json"
 require "forwardable"
 
 module Semaphore
@@ -73,6 +75,7 @@ module Semaphore
       def api_post(uri, params = {})
         handle_errors do
           resp = Curl.post("#{BASE_URI}#{uri}", params.merge(apikey: api_key))
+          binding.pry
           content = JSON.parse(resp.body_str)[0].symbolize_keys
           Response.new(content[:status], content)
         end
