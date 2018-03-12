@@ -1,6 +1,6 @@
 require "curb"
-require "pry"
 require "json"
+require "pry"
 require "forwardable"
 
 module Semaphore
@@ -34,15 +34,14 @@ module Semaphore
       end
 
       def messages(id: nil)
-        options = { id: id }.compact
-        api_get("messages", options)
+        api_get("messages#{id.nil? ? "" : "/#{id}"}")
       end
 
       def account
         api_get("account")
       end
 
-      def transactions(page: nil, limit: nil)
+      def transactions(page: nil, limit: 100)
         options = {
           page: page,
           limit: limit
@@ -50,7 +49,7 @@ module Semaphore
         api_get("account/transactions", options)
       end
 
-      def sender_names(page: nil, limit: nil)
+      def sender_names(page: nil, limit: 100)
         options = {
           page: page,
           limit: limit
@@ -58,7 +57,7 @@ module Semaphore
         api_get("account/sendernames", options)
       end
 
-      def users(page: nil, limit: nil)
+      def users(page: nil, limit: 100)
         options = {
           page: page,
           limit: limit
@@ -75,15 +74,14 @@ module Semaphore
       def api_post(uri, params = {})
         handle_errors do
           resp = Curl.post("#{BASE_URI}#{uri}", params.merge(apikey: api_key))
-          content = JSON.parse(resp.body_str)[0].symbolize_keys
-          Response.new(content[:status], content)
+          JSON.parse(resp.body_str)
         end
       end
 
       def api_get(uri, params = {})
         handle_errors do
           resp = Curl.get("#{BASE_URI}#{uri}", params.merge(apikey: api_key))
-          content = JSON.parse(resp.body_str)
+          JSON.parse(resp.body_str)
         end
       end
 
