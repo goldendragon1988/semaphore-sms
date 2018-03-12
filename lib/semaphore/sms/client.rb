@@ -15,7 +15,7 @@ module Semaphore
       end
 
       #TODO: add number validation here. Use piliponi gem.
-      def send_message(message, recipients, sendername = nil)
+      def send(message, recipients, sendername = nil)
         options = {
           message: message,
           sendername: sendername || sender_name,
@@ -24,7 +24,7 @@ module Semaphore
         api_post("messages", options)
       end
 
-      def send_priority_message(message, recipients, sendername = nil)
+      def priority(message, recipients, sendername = nil)
         options = {
           message: message,
           sendername: sendername || sender_name,

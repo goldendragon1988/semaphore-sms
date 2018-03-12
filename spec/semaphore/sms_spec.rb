@@ -45,9 +45,22 @@ RSpec.describe Semaphore::Sms do
   end
 
   describe "client" do
+    before do
+      Semaphore::Sms.setup do |config|
+        config.api_key = "XXXX"
+      end
+      account_uri = "http://api.semaphore.co/api/v4/account?apikey=XXXX"
+      stub_request(:get, account_uri).to_return(body: account_response)
+    end
 
-    describe ".send_message" do
-
+    describe ".account" do
+      it "returns account information" do
+        account = Semaphore::Sms.client.account
+        expect(account["account_id"]).to eq 4688
+        expect(account["account_name"]).to eq "FreeLance"
+        expect(account["status"]).to eq "Active"
+        expect(account["credit_balance"]).to eq "504"
+      end
     end
   end
 end
