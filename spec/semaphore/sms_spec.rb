@@ -48,7 +48,10 @@ RSpec.describe Semaphore::Sms do
     before do
       Semaphore::Sms.setup do |config|
         config.api_key = "XXXX"
+        config.sender_name = "TEST"
       end
+
+      #NOTE: GET REQUEST
       account_uri = "http://api.semaphore.co/api/v4/account?apikey=XXXX"
       stub_request(:get, account_uri).to_return(body: account_response)
 
@@ -66,24 +69,103 @@ RSpec.describe Semaphore::Sms do
 
       users_uri = "http://api.semaphore.co/api/v4/account/users?apikey=XXXX&limit=100"
       stub_request(:get, users_uri).to_return(body: users_response)
+
+      #NOTE: POST REQUEST
+      send_uri = "http://api.semaphore.co/api/v4/messages"
+      stub_request(:post, send_uri)
+        .with(body: "message=I+love+you+so+much&sendername=TEST&number=09778048888&apikey=XXXX")
+        .to_return(body: send_response)
+
+      stub_request(:post, send_uri)
+        .with(body: "message=Hello+world&sendername=TEST&number=09175488888%2C09778048888&apikey=XXXX")
+        .to_return(body: bulk_send_response)
+
+      priority_uri = "http://api.semaphore.co/api/v4/priority"
+      stub_request(:post, priority_uri)
+        .with(body: "message=I+love+you+so+much&sendername=TEST&number=09778048888&apikey=XXXX")
+        .to_return(body: priority_response)
+
+      stub_request(:post, priority_uri)
+        .with(body: "message=I+love+you+so+much&sendername=TEST&number=09778048888%2C09175488888&apikey=XXXX")
+        .to_return(body: bulk_priority_response)
     end
 
     describe ".send" do
       it "send a single message" do
+        messages = Semaphore::Sms.client.send("I love you so much", "09778048888")
+        item = messages.first
 
+        expect(item["message_id"]).to eq 55871500
+        expect(item["user_id"]).to eq 4788
+        expect(item["user"]).to eq "jag.arnold.go@gmail.com"
+        expect(item["account_id"]).to eq 4688
+        expect(item["account"]).to eq "FreeLance"
+        expect(item["recipient"]).to eq "639778048888"
+        expect(item["message"]).to eq "I love you so much"
+        expect(item["sender_name"]).to eq "Semaphore"
+        expect(item["network"]).to eq "Next"
+        expect(item["status"]).to eq "Pending"
+        expect(item["type"]).to eq "Single"
+        expect(item["source"]).to eq "Api"
       end
 
       it "send a single message to multiple recipients" do
+        messages = Semaphore::Sms.client.send("Hello world", ["09175488888","09778048888"])
+        item = messages.first
 
+        expect(messages.count).to eq 2
+        expect(item["message_id"]).to eq 55871554
+        expect(item["user_id"]).to eq 4788
+        expect(item["user"]).to eq "jag.arnold.go@gmail.com"
+        expect(item["account_id"]).to eq 4688
+        expect(item["account"]).to eq "FreeLance"
+        expect(item["recipient"]).to eq "639175488888"
+        expect(item["message"]).to eq "Hello World"
+        expect(item["sender_name"]).to eq "Semaphore"
+        expect(item["network"]).to eq "Globe"
+        expect(item["status"]).to eq "Pending"
+        expect(item["type"]).to eq "Bulk"
+        expect(item["source"]).to eq "Api"
       end
     end
 
     describe ".priority" do
       it "send a single message" do
+        messages = Semaphore::Sms.client.priority("I love you so much", "09778048888")
+        item = messages.first
+
+        expect(item["message_id"]).to eq 55871579
+        expect(item["user_id"]).to eq 4788
+        expect(item["user"]).to eq "jag.arnold.go@gmail.com"
+        expect(item["account_id"]).to eq 4688
+        expect(item["account"]).to eq "FreeLance"
+        expect(item["recipient"]).to eq "639778048888"
+        expect(item["message"]).to eq "I love you so much"
+        expect(item["sender_name"]).to eq "Semaphore"
+        expect(item["network"]).to eq "Next"
+        expect(item["status"]).to eq "Pending"
+        expect(item["type"]).to eq "Priority"
+        expect(item["source"]).to eq "Api"
 
       end
 
       it "send a single message to multiple recipients" do
+        messages = Semaphore::Sms.client.priority("I love you so much", ["09778048888","09175488888"])
+        item = messages.first
+
+        expect(messages.count).to eq 2
+        expect(item["message_id"]).to eq 55871602
+        expect(item["user_id"]).to eq 4788
+        expect(item["user"]).to eq "jag.arnold.go@gmail.com"
+        expect(item["account_id"]).to eq 4688
+        expect(item["account"]).to eq "FreeLance"
+        expect(item["recipient"]).to eq "639778048888"
+        expect(item["message"]).to eq "I love you so much"
+        expect(item["sender_name"]).to eq "Semaphore"
+        expect(item["network"]).to eq "Next"
+        expect(item["status"]).to eq "Pending"
+        expect(item["type"]).to eq "Priority"
+        expect(item["source"]).to eq "Api"
 
       end
     end
