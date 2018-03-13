@@ -1,8 +1,6 @@
 # Semaphore::Sms
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/semaphore/sms`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+This is a ruby api wrapper for Semaphore, https://semaphore.co/
 
 ## Installation
 
@@ -22,7 +20,42 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Run:
+    rails g semaphore:sms:install
+
+Note:
+
+  This will generate a file in `config/initializers` called "semaphore-sms.rb". Configure semaphore api here.
+
+```
+Semaphore::Sms.setup do |config|
+  # config.api_key = "YOUR API KEY HERE"
+  # NOTE: add if you want to use a single sender name by default.
+  # config.sender_name = "SEMAPHORE"
+end
+```
+Below we demonstrate the most basic usage of the library:
+
+```
+require "semaphore-sms"
+
+# You should already configure you api key under
+    client = Semaphore::Sms.client
+
+# Sending a single message.
+
+    client.send("Hello World", "09175488888")
+
+# Sending a single message to multiple recipients.
+
+    client.send("Hello World", ["09175488888","09778048888"])
+
+# Sending a message using a sender name.
+
+    client.send("Hello World", "09175488888", "SAITAMA")
+
+  Note: By default you can configure your sender name in `config/initializers/semaphore-sms` or pass a third agument to overwrite existing sender name in `initializers/semaphore-sms.rb`. If no sendername is attached it will default to `Semaphore`.
+```
 
 ## Development
 
@@ -32,7 +65,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/semaphore-sms. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/goldendragon1988/semaphore-sms. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 ## License
 
