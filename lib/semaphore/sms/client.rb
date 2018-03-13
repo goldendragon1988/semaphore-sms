@@ -45,7 +45,7 @@ module Semaphore
         options = {
           page: page,
           limit: limit
-        }
+        }.compact
         api_get("account/transactions", options)
       end
 
@@ -53,7 +53,7 @@ module Semaphore
         options = {
           page: page,
           limit: limit
-        }
+        }.compact
         api_get("account/sendernames", options)
       end
 
@@ -61,7 +61,7 @@ module Semaphore
         options = {
           page: page,
           limit: limit
-        }
+        }.compact
         api_get("account/users", options)
       end
 
