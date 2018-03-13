@@ -120,72 +120,40 @@ require "semaphore-sms"
           If no sendername is attached it will default to `Semaphore`.
 
 
-# Sending a single priority message.
+## Sending a single priority message.
 
     client.priority("Hello World", "09175488888")
 
-  # response
-
-    [
-      {
-        "message_id" => 55871579,
-        "user_id" => 4788,
-        "user" => "jag.arnold.go@gmail.com",
-        "account_id" => 4688,
-        "account" => "FreeLance",
-        "recipient" => "639175488888",
-        "message" => "Hello World",
-        "sender_name" => "Semaphore",
-        "network" => "Next",
-        "status" => "Pending",
-        "type" => "Priority",
-        "source" => "Api",
-        "created_at" => "2018-03-12 20:20:05",
-        "updated_at" => "2018-03-12 20:20:05"
-      }
-    ]
-
-# Sending a single priority message to multiple recipients or bulk messages.
+## Sending a single priority message to multiple recipients or bulk messages.
 
     client.priority("Hello World", ["09175488888","09778048888"])
 
-  # response
+## Requesting for account information
 
-    [
-      {
-        "message_id" => 55871603,
-        "user_id" => 4788,
-        "user" => "jag.arnold.go@gmail.com",
-        "account_id" => 4688,
-        "account" => "FreeLance",
-        "recipient" => "639175488888",
-        "message" => "I love you so much",
-        "sender_name" => "Semaphore",
-        "network" => "Globe",
-        "status" => "Pending",
-        "type" => "Priority",
-        "source" => "Api",
-        "created_at" => "2018-03-12 20:23:09",
-        "updated_at" => "2018-03-12 20:23:09"
-      },
-      {
-        "message_id" => 55871602,
-        "user_id" => 4788,
-        "user" => "jag.arnold.go@gmail.com",
-        "account_id" => 4688,
-        "account" => "FreeLance",
-        "recipient" => "639778048888",
-        "message" => "I love you so much",
-        "sender_name" => "Semaphore",
-        "network" => "Next",
-        "status" => "Pending",
-        "type" => "Priority",
-        "source" => "Api",
-        "created_at" => "2018-03-12 20:23:09",
-        "updated_at" => "2018-03-12 20:23:09"
-      }
-    ]
+    client.account
 
+## Requesting for all the messages sent
+
+    client.messages
+
+## Requesting for a specific message
+
+    client.messages(id: 55871555)
+
+## Requesting for all transaction made
+
+    client.transactions
+    client.transactions(id: 1, limit: 100) # Page and Limit are optional. Limit default to 100.
+
+## Requesting for all sender names
+
+    client.sender_names
+    client.sender_name(id: 1, limit: 100) # Page and Limit are optional. Limit default to 100.
+
+## Requesting for all users
+
+    client.users
+    client.users(id: 1, limit: 100) # Page and Limit are optional. Limit default to 100.
 ```
 
 ## Development
