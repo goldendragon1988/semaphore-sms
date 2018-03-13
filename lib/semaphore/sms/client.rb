@@ -33,15 +33,23 @@ module Semaphore
         api_post("priority", options)
       end
 
-      def messages(id: nil)
-        api_get("messages#{id.nil? ? "" : "/#{id}"}")
+      def messages(id: nil, page: nil, limit: nil, start_date: nil, end_date: nil, network: nil, status: nil)
+        options = {
+          page: page,
+          limit: limit,
+          startDate: start_date,
+          endDate: end_date,
+          network: network,
+          status: status
+        }.compact
+        api_get("messages#{id.nil? ? "" : "/#{id}"}", options)
       end
 
       def account
         api_get("account")
       end
 
-      def transactions(page: nil, limit: 100)
+      def transactions(page: nil, limit: nil)
         options = {
           page: page,
           limit: limit
@@ -49,7 +57,7 @@ module Semaphore
         api_get("account/transactions", options)
       end
 
-      def sender_names(page: nil, limit: 100)
+      def sender_names(page: nil, limit: nil)
         options = {
           page: page,
           limit: limit
@@ -57,7 +65,7 @@ module Semaphore
         api_get("account/sendernames", options)
       end
 
-      def users(page: nil, limit: 100)
+      def users(page: nil, limit: nil)
         options = {
           page: page,
           limit: limit

@@ -136,6 +136,21 @@ require "semaphore-sms"
 
     client.messages
 
+    client.messages(
+      id: nil,
+      page: nil,
+      limit: nil,
+      start_date: nil,
+      end_date: nil,
+      network: nil,
+      status: nil
+    )
+
+    # Note: all params are optional.
+      Format is "YYYY-MM-DD" for date,
+      Format is lowercase (e.g. "globe", "smart") for network,
+      Format is lowercase (e.g. "pending", "success")
+
 ## Requesting for a specific message
 
     client.messages(id: 55871555)
@@ -143,17 +158,17 @@ require "semaphore-sms"
 ## Requesting for all transaction made
 
     client.transactions
-    client.transactions(id: 1, limit: 100) # Page and Limit are optional. Limit default to 100.
+    client.transactions(id: 1, limit: 100) # Page and Limit are optional. Limit default to 100 and page 1.
 
 ## Requesting for all sender names
 
     client.sender_names
-    client.sender_name(id: 1, limit: 100) # Page and Limit are optional. Limit default to 100.
+    client.sender_name(id: 1, limit: 100) # Page and Limit are optional. Limit default to 100 and page 1.
 
 ## Requesting for all users
 
     client.users
-    client.users(id: 1, limit: 100) # Page and Limit are optional. Limit default to 100.
+    client.users(id: 1, limit: 100) # Page and Limit are optional. Limit default to 100 and page 1.
 ```
 
 ## Development
