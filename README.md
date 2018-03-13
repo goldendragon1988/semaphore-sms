@@ -149,7 +149,7 @@ require "semaphore-sms"
     # Note: all params are optional.
       Format is "YYYY-MM-DD" for date,
       Format is lowercase (e.g. "globe", "smart") for network,
-      Format is lowercase (e.g. "pending", "success")
+      Format is lowercase (e.g. "pending", "success") for status
 
 ## Requesting for a specific message
 
