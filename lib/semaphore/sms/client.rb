@@ -10,7 +10,7 @@ module Semaphore
       Response = Struct.new(:status, :content)
 
       def initialize(config)
-        raise Semaphore::Sms::Error, 'Config must have app credentials' unless config.respond_to? :api_key
+        raise Semaphore::Sms::Error, 'Config must have api key credentials' unless config.respond_to? :api_key
         @config = config
       end
 

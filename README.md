@@ -21,11 +21,13 @@ Or install it yourself as:
 ## Usage
 
 Run:
+```
     rails g semaphore:sms:install
+```
 
 Note:
 
-  This will generate a file in `config/initializers` called "semaphore-sms.rb". Configure semaphore api here.
+  This will generate a file in `config/initializers` called `semaphore-sms.rb`. Configure semaphore api here.
 
 ```
 Semaphore::Sms.setup do |config|
@@ -36,7 +38,7 @@ end
 ```
 Below we demonstrate the most basic usage of the library:
 
-```
+```ruby
 require "semaphore-sms"
 
 # You should already configure you api key under
@@ -44,17 +46,76 @@ require "semaphore-sms"
 
 # Sending a single message.
 
-    client.send("Hello World", "09175488888")
+    resp = client.send("Hello World", "09175488888")
+
+  # response
+
+    [
+      {
+        "message_id" => 55871500,
+        "user_id" => 4788,
+        "user" => "jag.arnold.go@gmail.com",
+        "account_id" => 4688,
+        "account" => "FreeLance",
+        "recipient" => "639778048888",
+        "message" => "I love you so much",
+        "sender_name" => "Semaphore",
+        "network" => "Next",
+        "status" => "Pending",
+        "type" => "Single",
+        "source" => "Api",
+        "created_at" => "2018-03-12 20:11:21",
+        "updated_at" => "2018-03-12 20:11:21"
+      }
+    ]
 
 # Sending a single message to multiple recipients.
 
     client.send("Hello World", ["09175488888","09778048888"])
 
+  # response
+
+    [
+      {
+        "message_id" => 55871554,
+        "user_id" => 4788,
+        "user" => "jag.arnold.go@gmail.com",
+        "account_id" => 4688,
+        "account" => "FreeLance",
+        "recipient" => "639175488888",
+        "message" => "Hello World",
+        "sender_name" => "Semaphore",
+        "network" => "Globe",
+        "status" => "Pending",
+        "type" => "Bulk",
+        "source" => "Api",
+        "created_at" => "2018-03-12 20:16:46",
+        "updated_at" => "2018-03-12 20:16:46"
+      },
+      {
+        "message_id" => 55871555,
+        "user_id" => 4788,
+        "user" => "jag.arnold.go@gmail.com",
+        "account_id" => 4688,
+        "account" => "FreeLance",
+        "recipient" => "639778048888",
+        "message" => "Hello World",
+        "sender_name" => "Semaphore",
+        "network" => "Next",
+        "status" => "Pending",
+        "type" => "Bulk",
+        "source" => "Api",
+        "created_at" => "2018-03-12 20:16:46",
+        "updated_at" => "2018-03-12 20:16:46"
+      }
+]
+
+
 # Sending a message using a sender name.
 
     client.send("Hello World", "09175488888", "SAITAMA")
 
-  Note: By default you can configure your sender name in `config/initializers/semaphore-sms` or pass a third agument to overwrite existing sender name in `initializers/semaphore-sms.rb`. If no sendername is attached it will default to `Semaphore`.
+    Note: By default you can configure your sender name in `config/initializers/semaphore-sms` or pass a third agument to overwrite existing sender name in `initializers/semaphore-sms.rb`. If no sendername is attached it will default to `Semaphore`.
 ```
 
 ## Development
