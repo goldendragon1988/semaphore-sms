@@ -41,12 +41,12 @@ Below we demonstrate the most basic usage of the library:
 ```ruby
 require "semaphore-sms"
 
-# You should already configure you api key under
+# You should already configure you api key under `initializers/semaphore-sms.rb`
     client = Semaphore::Sms.client
 
 # Sending a single message.
 
-    resp = client.send("Hello World", "09175488888")
+    client.send("Hello World", "09175488888")
 
   # response
 
@@ -58,7 +58,7 @@ require "semaphore-sms"
         "account_id" => 4688,
         "account" => "FreeLance",
         "recipient" => "639778048888",
-        "message" => "I love you so much",
+        "message" => "Hello World",
         "sender_name" => "Semaphore",
         "network" => "Next",
         "status" => "Pending",
@@ -69,7 +69,7 @@ require "semaphore-sms"
       }
     ]
 
-# Sending a single message to multiple recipients.
+# Sending a single message to multiple recipients or bulk messages.
 
     client.send("Hello World", ["09175488888","09778048888"])
 
@@ -108,14 +108,84 @@ require "semaphore-sms"
         "created_at" => "2018-03-12 20:16:46",
         "updated_at" => "2018-03-12 20:16:46"
       }
-]
+    ]
 
 
 # Sending a message using a sender name.
 
-    client.send("Hello World", "09175488888", "SAITAMA")
+    client.send("Hello World", ["09175488888", "09175488888"], "SAITAMA")
 
-    Note: By default you can configure your sender name in `config/initializers/semaphore-sms` or pass a third agument to overwrite existing sender name in `initializers/semaphore-sms.rb`. If no sendername is attached it will default to `Semaphore`.
+    NOTE: By default you can configure your sender name in `config/initializers/semaphore-sms` or
+          pass a third agument to overwrite existing sender name in `initializers/semaphore-sms.rb`.
+          If no sendername is attached it will default to `Semaphore`.
+
+
+# Sending a single priority message.
+
+    client.priority("Hello World", "09175488888")
+
+  # response
+
+    [
+      {
+        "message_id" => 55871579,
+        "user_id" => 4788,
+        "user" => "jag.arnold.go@gmail.com",
+        "account_id" => 4688,
+        "account" => "FreeLance",
+        "recipient" => "639175488888",
+        "message" => "Hello World",
+        "sender_name" => "Semaphore",
+        "network" => "Next",
+        "status" => "Pending",
+        "type" => "Priority",
+        "source" => "Api",
+        "created_at" => "2018-03-12 20:20:05",
+        "updated_at" => "2018-03-12 20:20:05"
+      }
+    ]
+
+# Sending a single priority message to multiple recipients or bulk messages.
+
+    client.priority("Hello World", ["09175488888","09778048888"])
+
+  # response
+
+    [
+      {
+        "message_id" => 55871603,
+        "user_id" => 4788,
+        "user" => "jag.arnold.go@gmail.com",
+        "account_id" => 4688,
+        "account" => "FreeLance",
+        "recipient" => "639175488888",
+        "message" => "I love you so much",
+        "sender_name" => "Semaphore",
+        "network" => "Globe",
+        "status" => "Pending",
+        "type" => "Priority",
+        "source" => "Api",
+        "created_at" => "2018-03-12 20:23:09",
+        "updated_at" => "2018-03-12 20:23:09"
+      },
+      {
+        "message_id" => 55871602,
+        "user_id" => 4788,
+        "user" => "jag.arnold.go@gmail.com",
+        "account_id" => 4688,
+        "account" => "FreeLance",
+        "recipient" => "639778048888",
+        "message" => "I love you so much",
+        "sender_name" => "Semaphore",
+        "network" => "Next",
+        "status" => "Pending",
+        "type" => "Priority",
+        "source" => "Api",
+        "created_at" => "2018-03-12 20:23:09",
+        "updated_at" => "2018-03-12 20:23:09"
+      }
+    ]
+
 ```
 
 ## Development
