@@ -3,7 +3,7 @@ require "semaphore/sms/client"
 
 module Semaphore
   module Sms
-    class ::Error < StandardError; end
+    class ::ConfigurationError < StandardError; end
 
     class << self
       attr_writer :api_key, :sender_name
@@ -18,7 +18,7 @@ module Semaphore
       end
 
       def api_key
-        raise Error, 'API Key is required for GET/POST' unless @api_key
+        raise ConfigurationError, 'API Key is required for GET/POST' unless @api_key
         @api_key
       end
 

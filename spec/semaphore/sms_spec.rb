@@ -19,7 +19,7 @@ RSpec.describe Semaphore::Sms do
 
   describe ".api_key" do
     it "raises Semaphore Error if api key is not define" do
-      expect{Semaphore::Sms.api_key}.to raise_error(Error)
+      expect{Semaphore::Sms.api_key}.to raise_error(ConfigurationError)
     end
 
     it "returns the api key" do
@@ -61,13 +61,13 @@ RSpec.describe Semaphore::Sms do
       message_uri = "http://api.semaphore.co/api/v4/messages/55870891?apikey=XXXX"
       stub_request(:get, message_uri).to_return(body: message_response)
 
-      transactions_uri = "http://api.semaphore.co/api/v4/account/transactions?apikey=XXXX&limit=100"
+      transactions_uri = "http://api.semaphore.co/api/v4/account/transactions?apikey=XXXX"
       stub_request(:get, transactions_uri).to_return(body: transactions_response)
 
-      sendernames_uri = "http://api.semaphore.co/api/v4/account/sendernames?apikey=XXXX&limit=100"
+      sendernames_uri = "http://api.semaphore.co/api/v4/account/sendernames?apikey=XXXX"
       stub_request(:get, sendernames_uri).to_return(body: sendernames_response)
 
-      users_uri = "http://api.semaphore.co/api/v4/account/users?apikey=XXXX&limit=100"
+      users_uri = "http://api.semaphore.co/api/v4/account/users?apikey=XXXX"
       stub_request(:get, users_uri).to_return(body: users_response)
 
       #NOTE: POST REQUEST
@@ -91,6 +91,14 @@ RSpec.describe Semaphore::Sms do
     end
 
     describe ".send" do
+      it "raises error if invalid phone number" do
+        expect{Semaphore::Sms.client.send("hello", "wat")}.to raise_error(PhoneNumberError)
+      end
+
+      it "raises error if one number is invalid" do
+        expect{Semaphore::Sms.client.send("hello", ["09175488888", "wat"])}.to raise_error(PhoneNumberError)
+      end
+
       it "send a single message" do
         messages = Semaphore::Sms.client.send("I love you so much", "09778048888")
         item = messages.first
@@ -130,6 +138,14 @@ RSpec.describe Semaphore::Sms do
     end
 
     describe ".priority" do
+      it "raises error if invalid phone number" do
+        expect{Semaphore::Sms.client.priority("hello", "wat")}.to raise_error(PhoneNumberError)
+      end
+
+      it "raises error if one number is invalid" do
+        expect{Semaphore::Sms.client.priority("hello", ["09175488888", "wat"])}.to raise_error(PhoneNumberError)
+      end
+
       it "send a single message" do
         messages = Semaphore::Sms.client.priority("I love you so much", "09778048888")
         item = messages.first

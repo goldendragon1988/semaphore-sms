@@ -1,30 +1,40 @@
 require "curb"
 require "json"
-require "pry"
 require "forwardable"
+require "piliponi"
 
 module Semaphore
   module Sms
+    class ::PhoneNumberError < StandardError; end
+
     class Client
       extend Forwardable
+
       Response = Struct.new(:status, :content)
 
       def initialize(config)
-        raise Semaphore::Sms::Error, 'Config must have api key credentials' unless config.respond_to? :api_key
+        raise ConfigurationError, 'Config must have api key credentials' unless config.respond_to? :api_key
         @config = config
       end
 
-      #TODO: add number validation here. Use piliponi gem.
       def send(message, recipients, sendername = nil)
+        recipients = clean_and_validate(recipients)
+
+        raise PhoneNumberError, 'Please verify the phonenumber' unless recipients
+
         options = {
           message: message,
           sendername: sendername || sender_name,
-          number: recipients.kind_of?(Array) ? recipients.join(",") : recipients
+          number: recipients
         }.compact
         api_post("messages", options)
       end
 
       def priority(message, recipients, sendername = nil)
+        recipients = clean_and_validate(recipients)
+
+        raise PhoneNumberError, 'Please verify the phonenumber' unless recipients
+
         options = {
           message: message,
           sendername: sendername || sender_name,
@@ -93,12 +103,33 @@ module Semaphore
         end
       end
 
+      def clean_and_validate(recipients)
+        if recipients.kind_of?(Array)
+          recipients = recipients.reduce([]) do |mem, num|
+            mem << (validate(num) ? clean(num) : false)
+            mem
+          end
+          recipients.include?(false) ? false : recipients.join(",")
+        else
+          recipients = clean(recipients)
+          validate(recipients) ? recipients : false
+        end
+      end
+
       def handle_errors
         begin
           yield
         rescue => e
           Response.new(:error, { error: e.message })
         end
+      end
+
+      def clean(num)
+        Piliponi.clean num
+      end
+
+      def validate(num)
+        Piliponi.plausible? num
       end
     end
   end
