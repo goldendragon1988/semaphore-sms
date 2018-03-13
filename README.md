@@ -21,8 +21,8 @@ Or install it yourself as:
 ## Usage
 
 Run:
-```
-    rails g semaphore:sms:install
+```ruby
+rails g semaphore:sms:install
 ```
 
 Note:
