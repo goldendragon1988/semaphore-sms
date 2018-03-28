@@ -116,7 +116,7 @@ require "semaphore-sms"
     client.send("Hello World", ["09175488888", "09175488888"], "SAITAMA")
 
     NOTE: By default you can configure your sender name in `config/initializers/semaphore-sms` or
-          pass a third agument to overwrite existing sender name in `initializers/semaphore-sms.rb`.
+          pass a third argument to overwrite existing sender name in `initializers/semaphore-sms.rb`.
           If no sendername is attached it will default to `Semaphore`.
 
 
@@ -163,13 +163,17 @@ require "semaphore-sms"
 ## Requesting for all sender names
 
     client.sender_names
-    client.sender_name(id: 1, limit: 100) # Page and Limit are optional. Limit default to 100 and page 1.
+    client.sender_names(id: 1, limit: 100) # Page and Limit are optional. Limit default to 100 and page 1.
 
 ## Requesting for all users
 
     client.users
     client.users(id: 1, limit: 100) # Page and Limit are optional. Limit default to 100 and page 1.
 ```
+
+## Validations:
+Using [Piliponi Gem](https://github.com/adimasuhid/piliponi): for validation of allowed numbers.
+List of [Prefix](https://github.com/adimasuhid/piliponi/blob/master/lib/piliponi/config/telco.yml)
 
 ## Development
 
