@@ -1,6 +1,6 @@
 # Semaphore::Sms
 
-This is a ruby api wrapper for Semaphore, https://semaphore.co/
+This is a ruby api wrapper for [Semaphore](https://semaphore.co/)
 
 ## Installation
 
@@ -172,7 +172,7 @@ require "semaphore-sms"
 ```
 
 ## Validations:
-Using [Piliponi Gem](https://github.com/adimasuhid/piliponi): for validation of allowed numbers.
+Using [Piliponi Gem](https://github.com/adimasuhid/piliponi) to validate accepted numbers.
 List of [Prefix](https://github.com/adimasuhid/piliponi/blob/master/lib/piliponi/config/telco.yml)
 
 ## Development
